@@ -1,0 +1,164 @@
+#include <gl\glut.h>
+#include <iostream>
+
+using namespace std;
+
+bool left_button_down = false;
+int width = 800;
+int height = 600;
+int cy = 428;
+int cx = 300;
+int i = 0;
+
+
+void DrawSlider(int x, int y) {
+	
+	glColor3f(1,1,1);
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	
+	glVertex2f(300 + 15, y);
+	glVertex2f(300 - 15, y);
+	
+	if (left_button_down && 285 <= x <= 315) {
+		glColor3f(1,0,0);
+		glVertex2f(300 + 15, y);
+		glVertex2f(300 - 15, y);
+		
+	}
+	
+	//glVertex2f(-575,-15);
+	//glVertex2f(-525,-15);
+	
+	//glColor3f(0,1,0);
+	
+	//glVertex2f(-575,-15);
+	//glVertex2f(-525,-15);
+	//glVertex2f(-525,0);
+	//glVertex2f(-575,0);
+	
+	//glColor3f(0,0,1);
+	
+	//glVertex2f(-575,-15);
+	//glVertex2f(-525,-15);
+	//glVertex2f(-525,0);
+	//glVertex2f(-575,0);
+	
+	glEnd();
+	
+}
+
+void DrawLines() {
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	
+	glColor3f(.9,0,0);
+	glVertex2f(300, 300);
+	glVertex2f(300,555);
+	
+	//glColor3f(0,1,0);
+	//glVertex2f(-350,-15);
+	//glVertex2f(-350,510);
+	
+	//glColor3f(0,0,1);
+	//glVertex2f(-150,-15);
+	//glVertex2f(-150,510);
+	
+	glEnd();
+	
+}
+
+
+//void DrawRectangle() {
+	
+	//glColor3f(1, 1, 1); // Black
+	//glBegin(GL_POLYGON);
+	//glVertex2f(050,-100);
+	//glVertex2f(650,-100);
+	//glVertex2f(650,-200);
+	//glVertex2f(050,-200); // Draws Black Squares
+	
+	//glEnd();
+//}
+
+//void DrawSquares() {
+	
+	//glColor3f(1, 1, 1); // Black
+	//glBegin(GL_QUADS);
+	//glVertex2f(150, 450);
+	//glVertex2f(150, 050);
+	//glVertex2f(550, 050);
+	//glVertex2f(550, 450); // Draws Black Squares
+	
+	//glEnd();
+//}
+
+
+
+void Display() {
+	glClear(GL_COLOR_BUFFER_BIT); // Enables Window For Writing
+	//DrawSquares();
+	//DrawRectangle();
+	DrawLines();
+	DrawSlider(cx,cy);
+	//cout << cy << endl;
+	
+	//if (left_button_down && (300 < cy <= 555)) {
+		//DrawSlider(cy);
+		//cout << cy << endl;
+	//}
+	
+	
+	glFlush();
+	//glEnd();
+}
+
+void mouse(int button, int state, int x, int y) {
+	switch(button) {
+		case GLUT_LEFT_BUTTON:
+		
+		if (state == GLUT_DOWN && (height - y >= 300) && (height - y <= 555) && (285 <= x <= 315)) {
+				cx = x;
+				cy = height - y;
+				left_button_down = true;
+				//cout << cy << "," << height - y << endl;
+		}
+
+		else {
+			left_button_down = false;
+		}
+	}
+	glutPostRedisplay();
+}
+
+void motion(int x, int y) {
+	
+	if ((left_button_down) && (height - y >= 300) && (height - y <= 555) && (285 <= x <= 315)) {
+		cx = x;
+		cy = height - y;
+		DrawSlider(cx,cy);
+		//cout << cy << "," << cx << endl;
+		//glutPostRedisplay();
+	}
+	
+	glutPostRedisplay();
+	
+}
+
+
+int main(int agrc, char ** argv) {
+	
+	glutInit(&agrc, argv);
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+	glutInitWindowPosition(100, 100);
+	glutInitWindowSize(width,height); // Window Size 600x600
+	glutCreateWindow("Color Mixer"); 
+	glClearColor(.5, .5, .5, 1); // White Background
+	glMatrixMode(GL_PROJECTION);
+	gluOrtho2D(0, width, 0, height); //800x600 graph
+	glutDisplayFunc(Display);
+	glutMouseFunc(mouse);
+	glutMotionFunc(motion);
+	glutMainLoop();
+
+}
