@@ -1,0 +1,205 @@
+#include <gl\glut.h>
+#include <iostream>
+
+using namespace std;
+
+bool left_button_down_Red = false;
+bool left_button_down_Green = false;
+int width = 800;
+int height = 600;
+
+int cy = 277; // Starting slider y position
+int cx = 100; // starting slider x position
+
+int cxgreen = 277;
+int cygreen = 100;
+
+
+float r = 0; // counter for red color
+float g = 0; // counter for green color
+float b = 0; // counter for blue color
+int counter = 1; // counter to determine the current values of r,g,b
+
+void DrawRectangle(int red, int green, int blue) {
+	
+	glColor3ub(red, green, blue); // Black
+	glBegin(GL_POLYGON);
+	glVertex2f(700,550);
+	glVertex2f(700,350);
+	glVertex2f(500,350);
+	glVertex2f(500,550); // Draws Black Squares
+	
+	glEnd();
+}
+
+
+void DrawRedSlider(int x, int y) {
+	
+	glColor3f(1,1,1);
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	
+	glVertex2f(100 + 15, y);
+	glVertex2f(100 - 15, y);
+	
+	if (left_button_down_Red) {
+		glColor3f(1,0,0);
+		glVertex2f(100 + 15, y);
+		glVertex2f(100 - 15, y);
+		r = y - 150;
+	}
+	
+	//cout << r << endl;
+	
+	glEnd();
+	
+}
+
+void DrawRedLines() {
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	
+	glColor3f(.9,0,0);
+	glVertex2f(100, 150);
+	glVertex2f(100,405);
+	
+	glEnd();
+	
+}
+
+void DrawGreenLines() {
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	
+	glColor3f(0,.9,0);
+	glVertex2f(200,150);
+	glVertex2f(200,405);
+	
+	glEnd();
+	
+}
+
+void DrawGreenSlider(int x, int y) {
+	
+	glColor3f(1,1,1);
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	
+	glVertex2f(200 + 15, y);
+	glVertex2f(200 - 15, y);
+	
+	if (left_button_down_Red) {
+		glColor3f(0,1,0);
+		glVertex2f(200 + 15, y);
+		glVertex2f(200 - 15, y);
+		//g = y - 150;
+		
+	}
+	
+	glEnd();
+	
+}
+
+void DrawBlueLines() {
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	
+	glColor3f(0,0,.9);
+	glVertex2f(300,150);
+	glVertex2f(300,405);
+	
+	glEnd();
+	
+}
+
+void DrawBlueSlider(int x, int y) {
+	
+	glColor3f(1,1,1);
+	glLineWidth(3);
+	glBegin(GL_LINES);
+	
+	glVertex2f(300 + 15, y);
+	glVertex2f(300 - 15, y);
+	
+	if (left_button_down_Red) {
+		glColor3f(0,0,1);
+		glVertex2f(300 + 15, y);
+		glVertex2f(300 - 15, y);
+		b = y - 150;
+		
+	}
+	
+	glEnd();
+	
+}
+
+void Display() {
+	glClear(GL_COLOR_BUFFER_BIT); // Enables Window For Writing
+	
+	DrawRedLines();
+	DrawRedSlider(cx,cy);
+	
+	DrawGreenLines();
+	DrawGreenSlider(cxgreen,cygreen);
+	
+	DrawBlueLines();
+	DrawBlueSlider(cx,cy);
+	
+	
+	DrawRectangle(r,g,b);
+	
+	
+	glFlush();
+	glEnd();
+}
+
+void mouse(int button, int state, int x, int y) {
+	switch(button) {
+		case GLUT_LEFT_BUTTON:
+		
+		if (state == GLUT_DOWN && (height - 1 - y >= 150) && (height - 1 - y <= 405) && (x >= 75) && (x <= 125)) {
+				cx = x;
+				cy = height - 1 - y;
+				left_button_down_Red = true;
+		}
+
+		else {
+			left_button_down_Red = false;
+		}
+	}
+	
+	glutPostRedisplay();
+}
+
+void motion(int x, int y) {
+	
+	if ((height - 1 - y >= 150) && (height - 1 - y <= 405) && (x >= 75) && (x <= 125)) {
+		cx = x;
+		cy = height - 1 - y;
+		left_button_down_Red = true;
+	}
+	else {
+		left_button_down_Red = false;
+	}
+	
+	glutPostRedisplay();
+	
+}
+
+
+int main(int agrc, char ** argv) {
+	
+	glutInit(&agrc, argv);
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+	glutInitWindowPosition(100, 100);
+	glutInitWindowSize(width,height); // Window Size 600x600
+	glutCreateWindow("Color Mixer"); 
+	glClearColor(.5, .5, .5, 1); // White Background
+	glMatrixMode(GL_PROJECTION);
+	gluOrtho2D(0, width, 0, height); //800x600 graph
+	glutDisplayFunc(Display);
+	glutMouseFunc(mouse);
+	glutMotionFunc(motion);
+	glutMainLoop();
+
+}
