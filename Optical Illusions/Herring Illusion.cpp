@@ -1,5 +1,5 @@
 #include <gl/glut.h>
-
+// Made by :Nash
 
 void DrawParallel() {
 	glClear(GL_COLOR_BUFFER_BIT);
