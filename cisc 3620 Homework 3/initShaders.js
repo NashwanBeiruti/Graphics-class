@@ -1,6 +1,6 @@
 //
 //  initShaders.js
-//
+//   made by:Nash
 
 function initShaders( gl, vertexShaderId, fragmentShaderId )
 {
