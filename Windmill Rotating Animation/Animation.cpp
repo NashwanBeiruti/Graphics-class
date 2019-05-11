@@ -1,7 +1,9 @@
+
 #include <iostream>
 #include <windows.h>
 #include <GL\glut.h>
 
+// Made by :Nash
 using namespace std;
 
 float pos[] = {-1,4,5,1};
