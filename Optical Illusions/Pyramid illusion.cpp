@@ -1,5 +1,5 @@
 #include <gl/glut.h>
-
+// Made by :Nash
 
 void DisplayIllusion(void) {
 	int x = 800; 
