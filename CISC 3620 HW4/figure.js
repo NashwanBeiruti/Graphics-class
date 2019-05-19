@@ -1,3 +1,6 @@
+//
+//  initShaders.js
+//   made by:Nash
 
 var canvas;
 var gl;
